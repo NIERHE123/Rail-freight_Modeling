@@ -38,10 +38,9 @@ POLICIES = ["mixed", "intree", "inseparable"]
 CAPACITY_LEVELS = [1.0, 0.6]
 CAPACITY_REFERENCE = "peak"
 
-# Reuse the classmate's Step 2 track-limit extension. Synthetic instances lack
-# source track counts, so estimate tracks as classification capacity / 76 cars
-# per track-day; this assumption is recorded in every output row.
-TRACK_LIMIT = True
+# Optional Step 2 sensitivity. The walkthrough's Step 4 baseline does not
+# require a track limit; set True to also use estimated track counts.
+TRACK_LIMIT = False
 CARS_PER_TRACK = 200
 CARS_PER_TRACK_DAY = 76
 OUTPUT_SUFFIX = "_tracks" if TRACK_LIMIT else ""
@@ -272,6 +271,8 @@ def run_experiments():
     for stem in ["rq3_profit_vs_service_level", "rq3_profit_vs_epsilon", "rq3_epsilon_vs_achieved_service"]:
         print(f"Saved figure to {RESULTS / f'{stem}{OUTPUT_SUFFIX}.png'}")
 
+    print_summary(runs, feasible)
+
 
 def make_figure(runs):
     """Plot actual trade-offs and make epsilon requirements visible."""
@@ -331,6 +332,67 @@ def make_figure(runs):
         figure.tight_layout(rect=(0, 0.08, 1, 0.95))
         figure.savefig(RESULTS / f"{filename[:-4]}{OUTPUT_SUFFIX}.png", dpi=160, facecolor="#fcfcfb")
         plt.close(figure)
+
+
+def print_summary(runs, feasible):
+    """Print RQ3's headline numbers after a run.
+
+    Three numbers answer "how does the profit-service trade-off change with
+    capacity and policy": the service ceiling (largest feasible demand share),
+    the gap between the inseparable and intree ceilings, and the cost of
+    service (profit lost per extra percentage point of demand served).
+    """
+    instances = sorted(feasible["instance"].unique())
+
+    print("\n=== RQ3 summary ===", flush=True)
+
+    print(
+        "Service ceiling (max feasible share of demand served), "
+        f"mean over {len(instances)} instances:",
+        flush=True,
+    )
+    for level in CAPACITY_LEVELS:
+        parts = []
+        for policy in POLICIES:
+            part = feasible[
+                (feasible["capacity_level"] == level) & (feasible["policy"] == policy)
+            ]["max_feasible_eps_estimate"]
+            parts.append(f"{policy}={part.mean():.1%}" if len(part) else f"{policy}=n/a")
+        print(f"  capacity {level:.0%}:  " + "   ".join(parts), flush=True)
+
+    print("\nService-ceiling gap (inseparable - intree), mean over instances:", flush=True)
+    for level in CAPACITY_LEVELS:
+        by_policy = feasible[feasible["capacity_level"] == level].pivot(
+            index="instance", columns="policy", values="max_feasible_eps_estimate"
+        )
+        gap = by_policy.get("inseparable", pd.Series(dtype=float)) - by_policy.get(
+            "intree", pd.Series(dtype=float)
+        )
+        per = ", ".join(f"{g:+.1%}" for g in gap)
+        print(f"  capacity {level:.0%}:  {gap.mean():+.2%}  (per instance: {per})", flush=True)
+
+    print(
+        "\nCost of service (profit lost per +1 percentage point of demand served, "
+        "CNY/day, mean over instances):",
+        flush=True,
+    )
+    for level in CAPACITY_LEVELS:
+        parts = []
+        for policy in POLICIES:
+            slopes = []
+            for instance in instances:
+                part = runs[
+                    (runs["instance"] == instance)
+                    & (runs["capacity_level"] == level)
+                    & (runs["policy"] == policy)
+                    & runs["feasible"]
+                ].sort_values("service_level")
+                if len(part) >= 2:
+                    slope, _ = np.polyfit(part["service_level"], part["profit"], 1)
+                    slopes.append(slope / 100.0)  # per +1 percentage point
+            parts.append(f"{policy}={np.mean(slopes):,.0f}" if slopes else f"{policy}=n/a")
+        print(f"  capacity {level:.0%}:  " + "   ".join(parts), flush=True)
+    print(flush=True)
 
 
 if __name__ == "__main__":

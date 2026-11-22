@@ -24,7 +24,7 @@ A value without a source is left blank, not guessed.
 | `data/instances/xin2022_example/` | 5-station example of Xin (2022), Tables 4-8 |
 | `data/instances/random_V10_S80_D40_seed1..5/` | Five random instances: 10 stations, 80 services, 40 demands |
 | `data/german/` | German yard data (Bundestag Drucksache 19/26856) and distance script |
-| `results/` | Run outputs: `rq1_runs.csv` (fractional trains), `rq1_runs_integer.csv` (whole trains) and the RQ1 figures |
+| `results/` | RQ1 and RQ3 run tables and figures |
 
 ## How to run
 
@@ -33,6 +33,7 @@ pip install -r requirements.txt
 python main.py
 python test_model.py
 python rq1_experiments.py
+python rq3_experiments.py
 ```
 
 The instance folder, `EPS` and `CAPACITY_FACTOR` are set at the top of `main.py`.
@@ -92,14 +93,41 @@ penalty, the eps-constraint on demand served, and an optional hard sorting-track
 GRB_LICENSE_FILE=/path/to/gurobi.lic python rq3_experiments.py
 ```
 
-The script runs the three blocking policies at 100% and 60% capacity on the six existing
-instances. It varies the minimum demand share `eps`, maximises profit for each value, and
-plots the resulting profit–achieved-service points as a Pareto-front approximation. By
-default it includes the Step 2 track limit (`200` cars per block per track). Because these
-instances do not contain sourced track counts, the script estimates available tracks as
-classification capacity divided by `76` cars per track-day; treat that conversion as an
-assumption pending team confirmation. Results use the `_tracks` suffix. Set `TRACK_LIMIT`
-to `False` at the top of the script to rerun without the track extension.
+Following walkthrough Step 4, the script compares all three policies at 100% and 60%
+capacity on six instances. For each case it samples five feasible `eps` targets, maximises
+profit subject to the minimum service requirement, and plots profit against achieved service.
+The baseline produces 180 optimal runs, a feasible-`eps` table and three figures in `results/`.
+An optional track-limit sensitivity is available with `TRACK_LIMIT = True`; it estimates
+track counts from capacity, so those `_tracks` results rely on an assumption rather than
+sourced track data.
+
+### First results (preliminary): profit against demand served
+
+The ε-constraint traces the profit–service frontier: for each policy and capacity level the
+script finds the largest feasible demand share and samples five `eps` targets up to it,
+maximising profit for each. Mean over the six instances, whole trains, peak-scaled capacity:
+
+| Capacity level | Mixed | Intree | Inseparable |
+|---|---|---|---|
+| 100 % | 46.7 % | 45.5 % | 47.8 % |
+| 60 % | 38.2 % | 38.1 % | 38.4 % |
+
+Largest feasible share of demand served (the "service ceiling"), mean over the six instances.
+
+- **Policy separates the frontier only at full capacity.** The service ceiling is highest for
+  inseparable and lowest for intree. In the paper's 8-station case the gap is 7.9 percentage
+  points (inseparable 86.1 % against intree 78.2 %).
+- **Tight capacity erases the policy difference.** At 60 % capacity the inseparable–intree
+  ceiling gap collapses from 2.3 pp to 0.3 pp (mean over six instances). In three of the six
+  instances the three policies share the exact same profit-maximising service level, and in the
+  paper's case all three ceilings fall to the same 71.1 %. When the yards are the bottleneck the
+  blocking policy stops mattering — the same mechanism as RQ1, where tight capacity is absorbed
+  by rejecting demand and leaves the policy no room to act.
+- **Service is expensive.** Serving one percentage point more demand costs about 207–219k
+  CNY/day at full capacity and 303–323k at 60 % capacity (mean linear slope of the frontier).
+- **The model serves little demand at maximum profit.** At 100 % capacity the profit-maximising
+  solution serves only 12.9–72.6 % of demand (mean 33.8 %): most shipments are unprofitable to
+  carry, so a low service level reflects rejection of loss-making demand, not scarce capacity.
 
 ## Validation
 
