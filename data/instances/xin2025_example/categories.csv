@@ -1,0 +1,14 @@
+id,express,car_cost_per_car_km
+Coal,no,0.9
+Petroleum,no,1.5
+Coke,no,2.2
+Metal Ore,no,1.8
+Building material,no,1.1
+Wood,no,2
+Grain,no,2.5
+Cotton,no,2
+Chemical fertilizer,no,2.2
+Chemical product,no,2.2
+Machinery,no,1.7
+Vegetable,yes,2.5
+Fruit,yes,2.5

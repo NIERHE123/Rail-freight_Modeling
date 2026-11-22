@@ -1,0 +1,31 @@
+id,origin,destination,category,cars_per_day,time_limit_h,revenue
+d01,1,3,Chemical fertilizer,105,,544139
+d02,1,4,Chemical product,50,,367537
+d03,1,6,Chemical product,115,,737523
+d04,1,7,Wood,196,,1780254
+d05,2,1,Machinery,77,,197759
+d06,2,4,Fruit,159,27,2293033
+d07,2,5,Metal Ore,63,,212363
+d08,3,1,Chemical product,3,,11726
+d09,3,4,Cotton,116,,1046628
+d10,3,5,Coal,51,,160179
+d11,3,8,Vegetable,178,9,1079806
+d12,4,6,Coke,75,,68346
+d13,4,8,Metal Ore,161,,1024000
+d14,5,3,Metal Ore,153,,799487
+d15,5,4,Chemical fertilizer,144,,694455
+d16,6,1,Fruit,82,16,798445
+d17,6,3,Coal,83,,371831
+d18,6,4,Grain,13,,13473
+d19,6,7,Chemical product,178,,1753502
+d20,6,7,Fruit,143,28,2115604
+d21,6,8,Wood,40,,287052
+d22,7,1,Metal Ore,170,,989686
+d23,7,8,Grain,9,,104089
+d24,8,1,Cotton,161,,212967
+d25,8,2,Vegetable,95,7,416758
+d26,8,3,Chemical fertilizer,8,,28476
+d27,8,3,Chemical product,67,,232487
+d28,8,4,Chemical product,47,,408735
+d29,8,6,Chemical fertilizer,179,,1368826
+d30,8,7,Metal Ore,156,,1085563

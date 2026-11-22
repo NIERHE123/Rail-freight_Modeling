@@ -1,0 +1,9 @@
+id,name,accumulation_time_h,transfer_time_h,classification_capacity,sorting_capacity
+1,Station 1,0.05,0.01,1163,1749
+2,Station 2,0.06,0.02,3831,4728
+3,Station 3,0.04,0.02,4018,4524
+4,Station 4,0.03,0.03,2845,2664
+5,Station 5,0.03,0.03,3721,2560
+6,Station 6,0.05,0.03,1026,1676
+7,Station 7,0.05,0.02,2441,3540
+8,Station 8,0.04,0.01,2607,3326
