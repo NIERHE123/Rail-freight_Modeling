@@ -1,0 +1,4 @@
+id,origin,destination,category,cars_per_day,time_limit_h,revenue
+d1,1,2,coal,200,,
+d2,1,4,machinery,30,48,
+d3,1,5,vegetable,5,4,
