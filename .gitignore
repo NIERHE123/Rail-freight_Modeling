@@ -1,0 +1,9 @@
+~$*
+
+__pycache__/
+*.pyc
+.venv/
+*.lp
+*.ilp
+*.sol
+gurobi.log
