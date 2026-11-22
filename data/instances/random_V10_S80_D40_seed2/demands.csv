@@ -1,0 +1,41 @@
+id,origin,destination,category,cars_per_day,time_limit_h,revenue
+d001,1,2,Chemical product,157,,691344
+d002,1,5,Coal,177,,176910
+d003,1,5,Petroleum,96,,123725
+d004,1,5,Building material,176,,173835
+d005,1,5,Vegetable,27,5.58,83062
+d006,1,7,Cotton,199,,992217
+d007,1,10,Coal,5,,11868
+d008,2,6,Machinery,16,,113155
+d009,2,7,Machinery,125,,877815
+d010,2,8,Chemical product,151,,1297164
+d011,2,9,Coal,2,,3668
+d012,2,9,Cotton,96,,394938
+d013,2,10,Grain,186,,691914
+d014,3,1,Chemical fertilizer,194,,1938754
+d015,3,7,Machinery,30,,210667
+d016,3,9,Metal Ore,101,,542712
+d017,4,2,Cotton,36,,354651
+d018,4,2,Chemical fertilizer,102,,1159165
+d019,4,8,Petroleum,66,,113150
+d020,4,8,Grain,21,,73996
+d021,4,9,Metal Ore,86,,428117
+d022,5,1,Grain,55,,137813
+d023,5,2,Fruit,7,17.27,72904
+d024,6,4,Machinery,121,,1012604
+d025,7,4,Chemical fertilizer,186,,1786763
+d026,7,6,Vegetable,75,2.41,101128
+d027,7,8,Cotton,118,,548945
+d028,8,2,Wood,96,,650861
+d029,8,3,Vegetable,135,8.28,720211
+d030,8,5,Coal,185,,547902
+d031,8,6,Building material,108,,432892
+d032,8,10,Grain,175,,817176
+d033,9,2,Coke,60,,253925
+d034,9,4,Cotton,153,,724002
+d035,9,10,Cotton,110,,209479
+d036,9,10,Chemical fertilizer,179,,405981
+d037,10,1,Machinery,150,,652386
+d038,10,2,Coal,148,,200052
+d039,10,2,Chemical product,92,,315612
+d040,10,4,Building material,140,,354862
