@@ -1,0 +1,4 @@
+id,speed_kmh,max_cars
+Ordinary,80,50
+Fast,120,30
+Express,160,20
